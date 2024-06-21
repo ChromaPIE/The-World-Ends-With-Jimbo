@@ -11,10 +11,10 @@ table.insert(stuffToAdd, {
 	config = {extra = {profit = 2}},
 	pos = {x = 1, y = 5},
 	loc_txt = {
-		name = 'Thunder Pawn',
+		name = '雷电爪牙',
 		text = {
-			"Gain {C:money}$#1#{} each round",
-			"{C:attention}+1{} card slot in shop"
+			"每回合获得{C:money}$#1#",
+			"商店内卡牌槽位{C:attention}+1"
 		}
 	},
 	rarity = 1,

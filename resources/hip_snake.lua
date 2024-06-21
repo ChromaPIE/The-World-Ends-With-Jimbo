@@ -73,12 +73,10 @@ table.insert(stuffToAdd, {
 	config = {extra = {tagsToMake = 5, triggeredThisHand = false}},
 	pos = {x = 2, y = 6},
 	loc_txt = {
-		name = 'Sizzling Gaze',
+		name = '灼热凝视',
 		text = {
-			"If your hand is a {C:attention}Pair{}",
-			"of {C:attention}Aces{} and no other",
-			"cards, destroy them and",
-			"gain {C:attention}#1#{} random tags"
+			"若出牌仅包含{C:attention}两张A",
+			"则摧毁之并随机获得{C:attention}#1#{}个标签"
 		}
 	},
 	rarity = 1,
