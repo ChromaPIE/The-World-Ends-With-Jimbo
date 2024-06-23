@@ -13,9 +13,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Zantestu',
 		text = {
-			"When you play a {C:attention}Straight{}",
-			"with all four suits, gain",
-			"a {C:tarot}Tarot{} and a {C:planet}Planet{}"
+			"打出包含原版4种花色的{C:attention}顺子{}时",
+			"获得一张{C:tarot}塔罗牌{}或{C:planet}星球牌"
 		}
 	},
 	rarity = 1,

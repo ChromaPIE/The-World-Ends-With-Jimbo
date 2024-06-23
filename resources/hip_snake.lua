@@ -73,7 +73,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {tagsToMake = 5, triggeredThisHand = false}},
 	pos = {x = 2, y = 6},
 	loc_txt = {
-		name = '灼热凝视',
+		name = 'Sizzling Gaze',
 		text = {
 			"若出牌仅包含{C:attention}两张A",
 			"则摧毁之并随机获得{C:attention}#1#{}个标签"

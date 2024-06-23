@@ -98,9 +98,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = "LIVE!",
 		text = {
-			"After destroying {C:attention}#1#{} more",
-			"cards, all scoring cards in your",
-			"next hand become {C:dark_edition}Holographic{}"
+			"每摧毁{C:attention}#1#{}张卡牌后",
+			"下一次出牌中的所有卡牌",
+			"均变为{C:dark_edition}镭射"
 		}
 	},
 	rarity = 3,
