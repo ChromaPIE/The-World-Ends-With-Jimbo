@@ -4,7 +4,8 @@
 --- PREFIX: twewy
 --- MOD_AUTHOR: [parchmentEngineer]
 --- MOD_DESCRIPTION: Adds jokers inspired by the brands and pins of The World Ends With You
---- BADGE_COLOUR: 814BA8
+--- BADGE_COLOUR: 3333CC
+--- DISPLAY_NAME: TWEWJ
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -42,7 +43,7 @@ table.insert(stuffToAdd, {
 	object_type = "Back",
 	name = "testing",
 	key = "testing",
-	config = {twetyTesting = true, consumables = {'c_hanged_man', 'c_justice'}},
+	config = {twetyTesting = true, consumables = {'c_devil', 'c_magician'}},
 	pos = {x = 0, y = 0},
 	loc_txt = {
 		name = "Testing",
@@ -62,11 +63,19 @@ table.insert(stuffToAdd, {
 	py = 95
 })
 
+table.insert(stuffToAdd, {
+	object_type = "Atlas",
+	key = "modicon",
+	path = "icon.png",
+	px = 32,
+	py = 32
+})
+
 -- File loading based on Relic-Jokers
-local files = NFS.getDirectoryItems(mod_path.."resources")
+local files = NFS.getDirectoryItems(mod_path.."pins")
 for _, file in ipairs(files) do
     print("Loading file "..file)
-    local f, err = NFS.load(mod_path.."resources/"..file)
+    local f, err = NFS.load(mod_path.."pins/"..file)
     if err then print("Error loading file: "..err) else
       local curr_obj = f()
       if true then
@@ -83,6 +92,8 @@ for _, file in ipairs(files) do
 end
 
 
+-- == Set up testing deck
+
 for k,v in pairs(stuffToAdd) do
 	local addTestingDeck = false
 	if v.name ~= "blank" and (v.name ~= "testing" or addTestingDeck) then
@@ -97,7 +108,7 @@ function Back.apply_to_run(self)
 	if self.effect.config.twetyTesting then 
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				for _,tempName in ipairs({"thunderPawn", "excalibur", "mitama"}) do
+				for _,tempName in ipairs({"diss", "izanagi", "excalibur", "mitama"}) do
 					local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_twewy_'..tempName, nil)
 					card:add_to_deck()
 					G.jokers:emplace(card)
@@ -146,6 +157,18 @@ function Card.add_to_deck(self, from_debuff)
 
 	end
 	Card_add_to_deck_ref(self, from_debuff)
+	for k,v in ipairs(SMODS.find_card("j_twewy_supplyFactor", true)) do
+		if self.config.center.rarity == 2 and v.ability.extra.readyToUse then
+			v.ability.extra.readyToUse = false
+			card_eval_status_text(v, 'extra', nil, nil, nil, {message = "Duped!"})
+			destroyCard(v)
+			G.E_MANAGER:add_event(Event({func = function()
+				local copied = copy_card(self, nil, nil, nil, self.edition and self.edition.negative)
+				copied:add_to_deck()
+				G.jokers:emplace(copied)
+				return true end }))
+		end
+	end
 end
 
 local Card_remove_from_deck_ref = Card.remove_from_deck 
