@@ -13,8 +13,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Kewl Line',
 		text = {
-			"{C:attention}#1#{} hand size",
-			"Scored {C:attention}8s{} give {C:mult}+#2#{} Mult",
+			"手牌上限{C:attention}#1#",
+			"打出的{C:attention}8{}在计分时",
+			"给予{C:mult}+#2#{}倍率"
 		}
 	},
 	rarity = 1,
@@ -47,9 +48,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Dope Line',
 		text = {
-			"At end of round, {C:attention}destroy{}",
-			"this joker and all cards held",
-			"in hand become {C:attention}Mult Cards{}"
+			"回合结束时，{C:attention}摧毁{}本牌",
+			"并使所有手牌变为{C:attention}倍率牌"
 		}
 	},
 	rarity = 1,
@@ -92,8 +92,7 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Wild Line',
 		text = {
-			"Retrigger all",
-			"{C:attention}Mult Cards{}"
+			"重新触发所有{C:attention}倍率牌"
 		}
 	},
 	rarity = 2,
