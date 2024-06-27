@@ -13,10 +13,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Storm Warning',
 		text = {
-			"This joker gains {C:chips}+#1#{} Chips",
-			"when any card is sold. {C:attention}Resets{}",
-			"when any card is bought",
-			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
+			"售出卡牌时，本牌获得{C:chips}+#1#{}筹码",
+			"购买卡牌时{C:attention}重置{}加成",
+			"{C:inactive}（当前为{C:chips}+#2#{C:inactive}筹码）"
 		}
 	},
 	rarity = 2,
@@ -53,10 +52,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Candle Service',
 		text = {
-			"Every fourth scoring",
-			"{C:attention}2{}, {C:attention}3{}, {C:attention}4{}, or {C:attention}5{} gives",
-			"you {C:chips}+#1#{} Chips",
-			"{C:inactive}(Currently #2#/#3#){}"
+			"计分的{C:attention}2{}、{C:attention}3{}、{C:attention}4{}或{C:attention}5",
+			"每隔3张给予{C:chips}+#1#{}筹码",
+			"{C:inactive}（当前为第#2#/#3#张）"
 		}
 	},
 	rarity = 1,
@@ -102,9 +100,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Aqua Monster',
 		text = {
-			"All scoring cards become",
-			"{C:attention}Bonus Cards{} if played hand",
-			"contains a {C:attention}Three of a Kind{}"
+			"若打出的牌中包含{C:attention}三条",
+			"所有计分的牌均变为{C:attention}倍率牌"
 		}
 	},
 	rarity = 2,
@@ -151,9 +148,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Aqua Ghost',
 		text = {
-			"All scoring cards become",
-			"{C:dark_edition}Foil Cards{} if played hand",
-			"contains a {C:attention}Three of a Kind{}"
+			"若打出的牌中包含{C:attention}三条",
+			"所有计分的牌均变为{C:dark_edition}闪箔"
 		}
 	},
 	rarity = 3,
@@ -200,9 +196,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Aqua Demon',
 		text = {
-			"{C:chips}+#1#{} Chips if played",
-			"hand contains",
-			"a {C:attention}Three of a Kind{}"
+			"若打出的牌中",
+			"包含{C:attention}三条",
+			"{C:chips}+#1#{}筹码"
 		}
 	},
 	rarity = 3,
@@ -233,8 +229,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Lightning Moon',
 		text = {
-			"{C:chips}+#1#{} Chips for each",
-			"{C:clubs}Club{} held in hand",
+			"手中每有一张{C:clubs}梅花{}牌",
+			"{C:chips}+#1#{}筹码"
 		}
 	},
 	rarity = 1,

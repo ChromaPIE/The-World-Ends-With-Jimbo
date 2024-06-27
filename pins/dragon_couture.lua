@@ -13,9 +13,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Self Found, Others Lost',
 		text = {
-			"Gain {C:attention}+#1#{} hand size next round",
-			"whenever you {C:attention}reroll{} the shop",
-			"{C:inactive}(Currently {C:attention}+#2#{C:inactive} hand size)"
+			"{C:attention}重掷{}商店可使",
+			"下一回合手牌上限{C:attention}+#1#",
+			"{C:inactive}（当前可{C:attention}+#2#{C:inactive}手牌上限）"
 		}
 	},
 	rarity = 2,
@@ -54,8 +54,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'One Grain, Infinite Promise',
 		text = {
-			"Whenever you use a {C:attention}consumable{}",
-			"during a round, draw {C:attention}#1#{} cards"
+			"在回合内使用{C:attention}消耗牌{}时",
+			"抽{C:attention}#1#{}张牌"
 		}
 	},
 	rarity = 1,
@@ -96,9 +96,9 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'One Stroke, Vast Wealth',
 		text = {
-			"{C:attention}+1{} hand size for every {C:money}$#1#{}",
-			"you have, to a maximum of {C:attention}+#3#{}",
-			"{C:inactive}(Currently {C:attention}+#2#{C:inactive} hand size)"
+			"每拥有{C:money}$#1#{}，手牌上限{C:attention}+1",
+			"至多可{C:attention}+#3#",
+			"{C:inactive}（当前为{C:attention}+#2#{C:inactive}手牌上限）"
 		}
 	},
 	rarity = 2,
@@ -130,8 +130,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Swift Storm, Swift End',
 		text = {
-			"{C:attention}+#1#{} hand size on the",
-			"{C:attention}final hand{} of each round"
+			"每回合{C:attention}最后一次{}出牌前",
+			"手牌上限{C:attention}+#1#"
 		}
 	},
 	rarity = 2,
@@ -173,8 +173,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Flames Apart, Foes Aflame',
 		text = {
-			"When you play a {C:attention}Straight Flush{} or",
-			"a {C:attention}secret hand{}, draw your {C:dark_edition}entire deck{}"
+			"打出{C:attention}同花顺{}或{C:attention}秘密牌型{}时",
+			"抽取牌组中的{C:dark_edition}所有卡牌"
 		}
 	},
 	rarity = 3,

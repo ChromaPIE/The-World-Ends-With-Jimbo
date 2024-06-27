@@ -13,10 +13,10 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Long Live The Ice',
 		text = {
-			"When you play a hand,",
-			"{V:1}#3#: {C:chips}+#1#{V:1} chips{}",
-			"{V:2}#4#: Gain {C:money}$#2#{}",
-			"Swap effects on blind skip"
+			"出牌时，",
+			"{V:1}#3#：{C:chips}+#1#{V:1}筹码",
+			"{V:2}#4#：获得{C:money}$#2#",
+			"跳过盲注时切换效果"
 		}
 	},
 	rarity = 1,
@@ -28,8 +28,8 @@ table.insert(stuffToAdd, {
 				return {vars = {
 			center.ability.extra.chips,
 			center.ability.extra.dollars,
-			center.ability.extra.flipside and "Inactive" or "Active",
-			center.ability.extra.flipside and "Active" or "Inactive",
+			center.ability.extra.flipside and "未激活" or "激活", -- 待本地化
+			center.ability.extra.flipside and "激活" or "未激活",
 			colours = {
 				center.ability.extra.flipside and G.C.UI.TEXT_INACTIVE or G.C.UI.TEXT_DARK,
 				center.ability.extra.flipside and G.C.UI.TEXT_DARK or G.C.UI.TEXT_INACTIVE
@@ -75,10 +75,8 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Sizzling Gaze',
 		text = {
-			"If your hand is a {C:attention}Pair{}",
-			"of {C:attention}Aces{} and no other",
-			"cards, destroy them and",
-			"gain {C:attention}#1#{} random tags"
+			"若出牌仅包含{C:attention}两张A",
+			"则摧毁之并随机获得{C:attention}#1#{}个标签"
 		}
 	},
 	rarity = 1,
