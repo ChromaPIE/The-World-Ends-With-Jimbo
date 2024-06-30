@@ -56,6 +56,7 @@ table.insert(stuffToAdd, {
 	cost = 3,
 	discovered = true,
 	blueprint_compat = false,
+	eternal_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {}}
@@ -145,6 +146,7 @@ table.insert(stuffToAdd, {
 	cost = 7,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {
@@ -429,6 +431,7 @@ table.insert(stuffToAdd, {
 	cost = 8,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.multGain, center.ability.extra.mult}}
@@ -443,6 +446,11 @@ table.insert(stuffToAdd, {
 				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
 				mult_mod = card.ability.extra.mult,
 			}
+		end
+		
+		if G.GAME.blind.triggered and context.debuffed_hand then 
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.multGain
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Upgrade!"})
 		end
 	end
 })
@@ -491,6 +499,58 @@ table.insert(stuffToAdd, {
 			return {
 				message = "Extinguished!"
 			}
+		end
+	end
+})
+
+-- Cosmic Pull
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "cosmicPull",
+	key = "cosmicPull",
+	config = {extra = {mult = 0}},
+	pos = {x = 10, y = 1},
+	loc_txt = {
+		name = 'Cosmic Pull',
+		text = {
+			"This joker gains {C:mult}+1{} Mult for",
+			"each {C:attention}face card{} held in hand",
+			"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
+		}
+	},
+	rarity = 2,
+	cost = 7,
+	discovered = true,
+	blueprint_compat = true,
+	perishable_compat = false,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.mult}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and context.joker_main and card.ability.extra.mult > 0 then
+			return {
+				message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
+				mult_mod = card.ability.extra.mult,
+			}
+		end
+		
+		if context.cardarea == G.hand and context.individual and not context.end_of_round and
+		context.other_card:is_face() then
+			if context.other_card.debuff then
+				return {
+					message = localize('k_debuffed'),
+					colour = G.C.RED,
+					card = card,
+				}
+			else
+				card.ability.extra.mult = card.ability.extra.mult + 1
+				return {
+					message = "Upgrade!",
+					colour = G.C.RED,
+					card = card
+				}
+			end
 		end
 	end
 })

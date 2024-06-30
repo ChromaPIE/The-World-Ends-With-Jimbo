@@ -180,4 +180,5 @@ table.insert(stuffToAdd, {
 	end
 })
 
-return {stuffToAdd = stuffToAdd}
+return {stuffToAdd = {}}
+--return {stuffToAdd = stuffToAdd}

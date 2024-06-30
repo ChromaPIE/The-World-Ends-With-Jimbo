@@ -6,6 +6,7 @@
 --- MOD_DESCRIPTION: Adds jokers inspired by the brands and pins of The World Ends With You
 --- BADGE_COLOUR: 3333CC
 --- DISPLAY_NAME: TWEWJ
+--- VERSION: 0.4.0
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -79,8 +80,9 @@ table.insert(stuffToAdd, {
 })
 
 local debugMode = false
-local testingJokers = {"burningCherry", "stormWarning", "candleService", "shout", "kaleidoscope"}
-local testingConsumables = {'c_lovers', 'c_lovers'}
+local testingJokers = {"cosmicPull", 'chaos', 'rakuyo'}
+local vanillaJokers = {'mime'}
+local testingConsumables = {}
 
 -- Testing card back
 table.insert(stuffToAdd, {
@@ -107,6 +109,35 @@ table.insert(stuffToAdd, {
 	py = 95
 })
 
+-- SMODS.Shader({key = 'glitter', path = 'glitter.fs'})
+-- SMODS.Sound({key = 'rhinestone', path = 'glitter.ogg'})
+
+-- SMODS.Edition{
+    -- key = 'rhinestone',
+	-- loc_txt = {
+		-- name = "Rhinestone",
+		-- text = {
+			-- "{X:mult,C:white} X#1# {} Mult if this is the",
+			-- "third {C:dark_edition}Rhinestone{} card",
+			-- "triggered this hand"
+		-- }
+	-- },
+
+    -- config = {xMult = 3},
+    -- loc_vars = function(self, info_queue)
+        -- return {vars = {self.config.xMult}}
+    -- end,
+
+    -- sound = {sound = 'twewy_rhinestone', per = 1.2, vol = 0.4},
+    -- in_shop = true,
+    -- weight = 9,
+    -- get_weight = function(self)
+        -- return G.GAME.edition_rate * self.weight
+    -- end,
+
+    -- shader = 'glitter'
+-- }
+
 table.insert(stuffToAdd, {
 	object_type = "Atlas",
 	key = "modicon",
@@ -115,22 +146,22 @@ table.insert(stuffToAdd, {
 	py = 34
 })
 
-local card_h_popupref = G.UIDEF.card_h_popup
-function G.UIDEF.card_h_popup(card)
-    local retval = card_h_popupref(card)
-    if not card.config.center or -- no center
-	(card.config.center.unlocked == false and not card.bypass_lock) or -- locked card
-	card.debuff or -- debuffed card
-	(not card.config.center.discovered and ((card.area ~= G.jokers and card.area ~= G.consumeables and card.area) or not card.area)) -- undiscovered card
-	then return retval end
+-- local card_h_popupref = G.UIDEF.card_h_popup
+-- function G.UIDEF.card_h_popup(card)
+    -- local retval = card_h_popupref(card)
+    -- if not card.config.center or -- no center
+	-- (card.config.center.unlocked == false and not card.bypass_lock) or -- locked card
+	-- card.debuff or -- debuffed card
+	-- (not card.config.center.discovered and ((card.area ~= G.jokers and card.area ~= G.consumeables and card.area) or not card.area)) -- undiscovered card
+	-- then return retval end
 
-	if card.config.center.rarity == gatitoRarity and false then
-		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1].nodes[1].nodes[2].config.object:remove()
-		retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1] = create_badge("Gatito", loc_colour("gatito", nil), nil, 1.2)
-	end
+	-- if card.config.center.rarity == gatitoRarity and false then
+		-- retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1].nodes[1].nodes[2].config.object:remove()
+		-- retval.nodes[1].nodes[1].nodes[1].nodes[3].nodes[1] = create_badge("Gatito", loc_colour("gatito", nil), nil, 1.2)
+	-- end
 
-	return retval
-end
+	-- return retval
+-- end
 
 -- File loading based on Relic-Jokers
 local files = NFS.getDirectoryItems(mod_path.."pins")
@@ -179,6 +210,16 @@ function Back.apply_to_run(self)
 				return true
 			end
 		}))
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				for _,tempName in ipairs(vanillaJokers) do
+					local card = create_card('Joker', G.jokers, nil, nil, nil, nil, 'j_'..tempName, nil)
+					card:add_to_deck()
+					G.jokers:emplace(card)
+				end
+				return true
+			end
+		}))
 	end
 end
 
@@ -210,7 +251,8 @@ end
 local Card_add_to_deck_ref = Card.add_to_deck 
 function Card.add_to_deck(self, from_debuff)
 	if not self.added_to_deck then
-		if self.ability.name == 'kewlLine' or self.ability.name == 'selfFound' or self.ability.name == 'swiftStorm' then
+		if self.ability.name == 'kewlLine' or self.ability.name == 'selfFound' or self.ability.name == 'swiftStorm'
+		or self.ability.name == 'blackSky' then
 			G.hand:change_size(self.ability.extra.handSize)
 		end
 		
@@ -249,8 +291,22 @@ end
 
 local Card_remove_from_deck_ref = Card.remove_from_deck 
 function Card.remove_from_deck(self, from_debuff)
+	for k,v in ipairs(SMODS.find_card("j_twewy_live", true)) do
+		if self.getting_sliced then
+			print("Removing a "..self.ability.name)
+			v.ability.extra.countdown = v.ability.extra.countdown - 1
+			if v.ability.extra.countdown < 0 then
+				v.ability.extra.countdown = 0
+			end
+			card_eval_status_text(v, 'extra', nil, nil, nil, {message = v.ability.extra.countdown.." left"})
+			if v.ability.extra.countdown == 0 then
+				local eval = function(v) return (v.ability.extra.countdown == 0) and not G.RESET_JIGGLES end
+				juice_card_until(v, eval, true)
+			end
+		end
+	end
 	if self.added_to_deck then
-		if self.ability.name == 'kewlLine' or self.ability.name == 'selfFound' 
+		if self.ability.name == 'kewlLine' or self.ability.name == 'selfFound' or self.ability.name == 'blackSky'
 		or self.ability.name == 'oneStroke' or self.ability.name == 'swiftStorm' then
 			G.hand:change_size(-self.ability.extra.handSize)
 		end
@@ -269,6 +325,30 @@ function Card.remove_from_deck(self, from_debuff)
 	end
 	Card_remove_from_deck_ref(self, from_debuff)
 end
+
+function SMODS.current_mod.set_debuff(card, should_debuff)
+	if card.ability.blackSkyDebuff then
+		card.debuff = true
+		--return true
+	end
+end
+
+local update_round_evalref = Game.update_round_eval
+function Game:update_round_eval(dt)
+	update_round_evalref(self, dt)
+	if G.deck.config.wonderMagnum then
+    local _first_dissolve = false
+    for _, wax_id in ipairs(G.deck.config.wonderMagnum) do
+      for k, card in ipairs(G.playing_cards) do
+        if card.unique_val == wax_id then
+          card:start_dissolve(nil, _first_dissolve)
+          _first_dissolve = true
+        end
+      end
+    end
+    G.deck.config.wonderMagnum = {}
+  end
+ end
 
 local G_FUNCS_reroll_shop = G.FUNCS.reroll_shop
 function G.FUNCS.reroll_shop(e)
@@ -597,3 +677,95 @@ table.insert(stuffToAdd, {
 	end
 })
 
+-- Vacu Squeeze
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "vacuSqueezeScrapped",
+	key = "vacuSqueezeScrapped",
+	config = {extra = {retriggers = 4}},
+	pos = {x = 2, y = 10},
+	loc_txt = {
+		name = 'Vacu Squeeze',
+		text = {
+			"If your scoring hand has only",
+			"one {C:attention}face card{}, retrigger it {C:attention}#1#{} times"
+		}
+	},
+	rarity = 1,
+	cost = 4,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.retriggers}}
+	end,
+	calculate = function(self, card, context)
+		if context.repetition
+		and context.other_card:is_face()
+		and context.cardarea == G.play then
+			local faces = {}
+			for k, v in ipairs(context.scoring_hand) do
+				if v:is_face() then 
+					faces[#faces+1] = v
+				end
+			end
+			if #faces == 1 then
+				return {
+					message = localize('k_again_ex'),
+					repetitions = card.ability.extra.retriggers,
+					card = card
+				}
+			end
+		end
+	end
+})
+
+-- Impact Warning
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "impactWarningScrapped",
+	key = "impactWarningScrapped",
+	config = {extra = {chips = 0, chipsGain = 50}},
+	pos = {x = 8, y = 0},
+	loc_txt = {
+		name = 'Impact Warning',
+		text = {
+			"This joker gains {C:chips}+#1#{} Chips",
+			"when a {C:planet}Planet{} card is used",
+			"{C:attention}Resets{} on playing a {C:attention}Level 1{} hand",
+			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
+		}
+	},
+	rarity = 2,
+	cost = 6,
+	discovered = true,
+	blueprint_compat = true,
+	perishable_compat = false,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.chipsGain, center.ability.extra.chips}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and context.before and G.GAME.hands[context.scoring_name].level == 1 and card.ability.extra.chips > 0 then
+			card.ability.extra.chips = 0
+			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Reset!"})
+		end
+		
+		if context.cardarea == G.jokers and context.joker_main and card.ability.extra.chips > 0 then
+			return {
+				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+				chip_mod = card.ability.extra.chips,
+			}
+		end
+		
+		if context.using_consumeable and not context.blueprint then
+			if context.consumeable.ability.set == "Planet" then
+				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chipsGain
+				card_eval_status_text(card, 'extra', nil, nil, nil, {
+					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+					chip_mod = card.ability.extra.chips,
+				})
+			end
+		end
+	end
+})

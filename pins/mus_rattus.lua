@@ -22,6 +22,7 @@ table.insert(stuffToAdd, {
 	cost = 8,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.chipGain, center.ability.extra.chips}}
@@ -280,6 +281,7 @@ table.insert(stuffToAdd, {
 	cost = 3,
 	discovered = true,
 	blueprint_compat = true,
+	eternal_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.chips, center.ability.extra.chipsGain, center.ability.extra.handReq}}
@@ -345,30 +347,32 @@ table.insert(stuffToAdd, {
 	object_type = "Joker",
 	name = "impactWarning",
 	key = "impactWarning",
-	config = {extra = {chips = 0, chipsGain = 50}},
+	config = {extra = {chips = 0, chipsGain = 20, lastUsed = "None"}},
 	pos = {x = 8, y = 0},
 	loc_txt = {
 		name = 'Impact Warning',
 		text = {
-			"This joker gains {C:chips}+#1#{} Chips",
-			"when a {C:planet}Planet{} card is used",
-			"{C:attention}Resets{} on playing a {C:attention}Level 1{} hand",
-			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
+			"This joker gains {C:chips}+#1#{} Chips when a",
+			"{C:planet}Planet{} card is used. {C:attention}Resets{} on using",
+			"the same {C:planet}Planet{} twice in a row",
+			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
+			"{C:inactive}(Last used: {C:planet}#3#{C:inactive}){}"
 		}
 	},
 	rarity = 2,
 	cost = 6,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
-		return {vars = {center.ability.extra.chipsGain, center.ability.extra.chips}}
+		return {vars = {center.ability.extra.chipsGain, center.ability.extra.chips, center.ability.extra.lastUsed}}
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before and G.GAME.hands[context.scoring_name].level == 1 and card.ability.extra.chips > 0 then
-			card.ability.extra.chips = 0
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Reset!"})
-		end
+		-- if context.cardarea == G.jokers and context.before and G.GAME.hands[context.scoring_name].level == 1 and card.ability.extra.chips > 0 then
+			-- card.ability.extra.chips = 0
+			-- card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Reset!"})
+		-- end
 		
 		if context.cardarea == G.jokers and context.joker_main and card.ability.extra.chips > 0 then
 			return {
@@ -379,11 +383,17 @@ table.insert(stuffToAdd, {
 		
 		if context.using_consumeable and not context.blueprint then
 			if context.consumeable.ability.set == "Planet" then
-				card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chipsGain
-				card_eval_status_text(card, 'extra', nil, nil, nil, {
-					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
-					chip_mod = card.ability.extra.chips,
-				})
+				if context.consumeable.ability.name == card.ability.extra.lastUsed then
+					card.ability.extra.chips = 0
+					card_eval_status_text(card, 'extra', nil, nil, nil, {message = "Reset!"})
+				else
+					card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chipsGain
+					card.ability.extra.lastUsed = context.consumeable.ability.name
+					card_eval_status_text(card, 'extra', nil, nil, nil, {
+						message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+						chip_mod = card.ability.extra.chips,
+					})
+				end
 			end
 		end
 	end
@@ -399,7 +409,7 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Shout!',
 		text = {
-			"{C:chips}+#1#{} chips if your last {C:attention}3{} hands",
+			"{C:chips}+#1#{} Chips if your last {C:attention}3{} hands",
 			"contained a scoring face card",
 			"{C:inactive}(Current streak: {C:attention}#2#{C:inactive}){}"
 		}
@@ -434,6 +444,62 @@ table.insert(stuffToAdd, {
 					message = "Reset!"
 				}
 			end			
+		end
+	end
+})
+
+-- Burning Melon
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "burningMelon",
+	key = "burningMelon",
+	config = {extra = {chips = 80, chipsLoss = -10, bigChips = 200}},
+	pos = {x = 10, y = 0},
+	loc_txt = {
+		name = 'Burning Melon',
+		text = {
+			"{C:chips}+#1#{} Chips, {C:chips}#2#{} per round",
+			"On the final hand of the",
+			"round, gives {C:chips}+#3#{} extra chips",
+			"and destroy this joker"
+		}
+	},
+	rarity = 1,
+	cost = 3,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.chips, center.ability.extra.chipsLoss, center.ability.extra.bigChips}}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.jokers and context.joker_main and card.ability.extra.chips > 0 then
+			if G.GAME.current_round.hands_left == 0 then
+				destroyCard(card)
+				return {
+					message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips + card.ability.extra.bigChips}},
+					chip_mod = card.ability.extra.chips + card.ability.extra.bigChips,
+				}
+			end
+			return {
+				message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
+				chip_mod = card.ability.extra.chips,
+			}
+		end
+	
+		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
+			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chipsLoss
+			if card.ability.extra.chips <= 0 then
+				destroyCard(card)
+				return {
+					message = "Eaten!",
+					colour = G.C.CHIPS
+				}
+			end
+			return {
+				message = card.ability.extra.chips.." Chips!",
+				colour = G.C.CHIPS
+			}
 		end
 	end
 })

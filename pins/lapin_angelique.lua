@@ -130,6 +130,7 @@ table.insert(stuffToAdd, {
 	cost = 9,
 	discovered = true,
 	blueprint_compat = true,
+	perishable_compat = false,
 	atlas = "jokers",
 	loc_vars = function(self, info_queue, center)
 		return {vars = {center.ability.extra.xMultGain, center.ability.extra.xMult}}
@@ -138,10 +139,10 @@ table.insert(stuffToAdd, {
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if G.GAME.dollars <= 4 then
 				card.ability.extra.xMult = card.ability.extra.xMult + card.ability.extra.xMultGain
+				return {
+					message = "Upgrade!"
+				}
 			end
-			return {
-				message = "Upgrade!"
-			}
 		end
 	
 		if context.cardarea == G.jokers and context.joker_main then
@@ -158,7 +159,7 @@ table.insert(stuffToAdd, {
 	object_type = "Joker",
 	name = "webSpider",
 	key = "webSpider",
-	config = {extra = {xMult = 2}},
+	config = {extra = {xMult = 2.5}},
 	pos = {x = 4, y = 4},
 	loc_txt = {
 		name = 'Web Spider',
@@ -278,7 +279,7 @@ table.insert(stuffToAdd, {
 	object_type = "Joker",
 	name = "kaleidoscope",
 	key = "kaleidoscope",
-	config = {extra = {xMult = 1.25, progressList = {Spades = false, Clubs = false, Hearts = false, Diamonds = false}}},
+	config = {extra = {xMult = 1.5, progressList = {Spades = false, Clubs = false, Hearts = false, Diamonds = false}}},
 	pos = {x = 7, y = 4},
 	loc_txt = {
 		name = 'Kaleidoscope',

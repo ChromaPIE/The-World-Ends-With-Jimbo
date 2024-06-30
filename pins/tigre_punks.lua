@@ -104,12 +104,12 @@ table.insert(stuffToAdd, {
 	object_type = "Joker",
 	name = "live",
 	key = "live",
-	config = {extra = {countdown = 4, countdownMax = 4}},
+	config = {extra = {countdown = 3, countdownMax = 3}},
 	pos = {x = 3, y = 7},
 	loc_txt = {
 		name = "LIVE!",
 		text = {
-			"After destroying {C:attention}#1#{} more",
+			"After destroying {C:attention}#1#{} more playing",
 			"cards, all scoring cards in your",
 			"next hand become {C:dark_edition}Holographic{}"
 		}
@@ -126,6 +126,9 @@ table.insert(stuffToAdd, {
 		if context.cards_destroyed and not context.blueprint then
 			local removed = 0
 			for k, v in ipairs(context.glass_shattered) do
+				removed = removed + 1
+			end
+			for k, v in ipairs(context.removed) do
 				removed = removed + 1
 			end
 			if removed > 0 then
@@ -178,6 +181,48 @@ table.insert(stuffToAdd, {
 				colour = G.C.MULT,
 				card = self
 			}
+		end
+	end
+})
+
+-- Distortion
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "distortion",
+	key = "distortion",
+	config = {extra = {dollars = 15}},
+	pos = {x = 4, y = 7},
+	loc_txt = {
+		name = 'Distortion',
+		text = {
+			"At the end of the round,",
+			"destroy all {C:blue}Common{} {C:attention}Jokers{}",
+			"and gain {C:money}$#1#{} for each{}"
+		}
+	},
+	rarity = 2,
+	cost = 4,
+	discovered = true,
+	blueprint_compat = false,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.dollars}}
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.individual and not context.repetition
+		and not context.blueprint then
+			for k,v in pairs(G.jokers.cards) do
+				if v.config.center.rarity == 1 and not v.ability.eternal then
+					destroyCard(v)
+					ease_dollars(card.ability.extra.dollars)
+					G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
+					G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+					card_eval_status_text(card, 'extra', nil, nil, nil, {
+						message = "+"..card.ability.extra.dollars.."$",
+						colour = G.C.MONEY
+					})
+				end
+			end
 		end
 	end
 })
