@@ -263,22 +263,23 @@ table.insert(stuffToAdd, {
 		if context.individual
 		and context.other_card.ability.effect ~= "Base"
 		and context.cardarea == G.play
-		and #G.consumeables.cards < G.consumeables.config.card_limit then
-			G.E_MANAGER:add_event(Event({
-				trigger = 'before',
-				delay = 0.0,
-				func = (function()
-					if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-						local card = create_card('Tarot', G.consumeables)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-						G.GAME.consumeable_buffer = 0
-						end
-					return true
-				end)})
-			)
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = "+1 Tarot!", colour = G.C.SECONDARY_SET.Tarot})
+		and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			return {
+				extra = {focus = card, message = localize('k_plus_tarot'), colour = G.C.SECONDARY_SET.Tarot, func = function()
+					G.E_MANAGER:add_event(Event({
+						trigger = 'before',
+						delay = 0.0,
+						func = (function()
+							local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, nil, 'twewy_masamune')
+							card:add_to_deck()
+							G.consumeables:emplace(card)
+							G.GAME.consumeable_buffer = 0
+							return true
+						end)}))
+				end},
+				card = card
+			}
 		end
 	end
 })
@@ -315,5 +316,53 @@ table.insert(stuffToAdd, {
 			return true end }))
 	end
 })
+
+-- Ohabari
+table.insert(stuffToAdd, {
+	object_type = "Joker",
+	name = "ohabari",
+	key = "ohabari",
+	config = {extra = {used = false}},
+	pos = {x = 8, y = 3},
+	loc_txt = {
+		name = 'Ohabari',
+		text = {
+			"Make a {C:dark_edition}Negative{} copy",
+			"of the first {C:attention}Consumable{}",
+			"used each ante",
+			"{C:inactive}(#1#){}"
+		}
+	},
+	rarity = 2,
+	cost = 6,
+	discovered = true,
+	blueprint_compat = true,
+	atlas = "jokers",
+	loc_vars = function(self, info_queue, center)
+		return {vars = {center.ability.extra.used and "Already used!" or "Ready!"}}
+	end,
+	calculate = function(self, card, context)
+		if context.using_consumeable and not card.ability.extra.used then
+			card.ability.extra.used = true
+			G.E_MANAGER:add_event(Event({
+				func = function() 
+					local card = copy_card(context.consumeable, nil)
+					card:set_edition({negative = true}, true)
+					card:add_to_deck()
+					G.consumeables:emplace(card) 
+					return true
+				end
+			}))
+			card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = "Copied!"})
+		end
+		
+		if context.end_of_round and not context.individuan and not context.repetition then
+			if G.GAME.blind and G.GAME.blind:get_type() == 'Boss'  then
+				card.ability.extra.used = false
+			end
+		end
+	end
+})
+
 
 return {stuffToAdd = stuffToAdd}
