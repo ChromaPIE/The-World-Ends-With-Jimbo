@@ -11,10 +11,10 @@ table.insert(stuffToAdd, {
 	config = {extra = {profit = 2}},
 	pos = {x = 1, y = 5},
 	loc_txt = {
-		name = 'Thunder Pawn',
+		name = '雷霆兵',
 		text = {
-			"Earn {C:money}$#1#{} each round",
-			"{C:attention}+1{} card slot in shop"
+			"每回合获得{C:money}$#1#",
+			"商店内卡牌槽位{C:attention}+1"
 		}
 	},
 	rarity = 1,
@@ -38,11 +38,10 @@ table.insert(stuffToAdd, {
 	config = {extra = {sellGain = 5}},
 	pos = {x = 2, y = 5},
 	loc_txt = {
-		name = 'Lightning Rook',
+		name = '闪电車',
 		text = {
-			"This joker gains {C:money}$#1#{} of",
-			"sell value whenever",
-			"an {C:attention}Ace{} is scored"
+			"每张计分的{C:attention}A",
+			"将使本牌的售价提升{C:money}$#1#"
 		}
 	},
 	rarity = 2,
@@ -76,12 +75,10 @@ table.insert(stuffToAdd, {
 	config = {extra = {newPrice = 1}},
 	pos = {x = 3, y = 5},
 	loc_txt = {
-		name = 'Excalibur',
+		name = '石中剑',
 		text = {
-			"Set the price of",
-			"{C:dark_edition}everything{} in the",
-			"shop to {C:money}$#1#{}",
-			"{C:inactive}(Except for rerolls){}"
+			"将商店内除重掷外",
+			"{C:dark_edition}所有{}商品的售价设为{C:money}$#1#"
 		}
 	},
 	rarity = 3,
@@ -110,11 +107,12 @@ table.insert(stuffToAdd, {
 	config = {extra = {}},
 	pos = {x = 4, y = 5},
 	loc_txt = {
-		name = 'Her Royal Highness',
+		name = '至高皇后',
 		text = {
-			"Duplicate {C:money}Gold{} cards held",
-			"in hand at end of round",
-			"{C:inactive}(Triggers after they pay out){}"
+			"回合结束时",
+			"复制手牌中的",
+			"所有{C:money}黄金牌",
+			"{C:inactive}（结算后触发复制）"
 		}
 	},
 	rarity = 2,

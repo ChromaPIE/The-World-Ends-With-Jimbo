@@ -11,7 +11,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {chips = 0, chipGain = 40}},
 	pos = {x = 5, y = 0},
 	loc_txt = {
-		name = 'Storm Warning',
+		name = '风暴预警',
 		text = {
 			"售出卡牌时，本牌获得{C:chips}+#1#{}筹码",
 			"购买卡牌时{C:attention}重置{}加成",
@@ -99,7 +99,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {}},
 	pos = {x = 2, y = 0},
 	loc_txt = {
-		name = 'Aqua Monster',
+		name = '水兽',
 		text = {
 			"若打出的牌中包含{C:attention}三条",
 			"所有计分的牌均变为{C:attention}倍率牌"
@@ -147,7 +147,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {}},
 	pos = {x = 3, y = 0},
 	loc_txt = {
-		name = 'Aqua Ghost',
+		name = '水鬼',
 		text = {
 			"若打出的牌中包含{C:attention}三条",
 			"所有计分的牌均变为{C:dark_edition}闪箔"
@@ -195,7 +195,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {chips = 666}},
 	pos = {x = 4, y = 0},
 	loc_txt = {
-		name = 'Aqua Demon',
+		name = '水魔',
 		text = {
 			"若打出的牌中",
 			"包含{C:attention}三条",
@@ -228,7 +228,7 @@ table.insert(stuffToAdd, {
 	config = {extra = {cardsNeeded = 4, chips = 30}},
 	pos = {x = 6, y = 0},
 	loc_txt = {
-		name = 'Lightning Moon',
+		name = '霹雳月',
 		text = {
 			"手中每有一张{C:clubs}梅花{}牌",
 			"{C:chips}+#1#{}筹码"
@@ -270,12 +270,12 @@ table.insert(stuffToAdd, {
 	config = {extra = {chips = 200, chipsGain = -25, handReq = "High Card"}},
 	pos = {x = 7, y = 0},
 	loc_txt = {
-		name = 'Burning Cherry',
+		name = '灼焰樱桃',
 		text = {
-			"{C:chips}+#1#{} Chips",
-			"{C:chips}#2#{} Chips when you play a",
-			"hand that isn't {C:attention}#3#{}",
-			"{C:inactive}(Hand changes each round){}"
+			"{C:chips}+#1#{}筹码",
+			"若所出牌型不为{C:attention}#3#",
+			"则{C:chips}#2#{}筹码",
+			"{C:inactive}（每回合改变上述牌型）"
 		}
 	},
 	rarity = 1,
@@ -308,12 +308,12 @@ table.insert(stuffToAdd, {
 					end
 				})) 
 				return {
-					message = "Eaten!",
+					message = "吃光了！",
 					colour = G.C.CHIPS
 				}
 			end
 			return {
-				message = "Downgrade!",
+				message = "降级！",
 				colour = G.C.CHIPS,
 				card = card
 			}

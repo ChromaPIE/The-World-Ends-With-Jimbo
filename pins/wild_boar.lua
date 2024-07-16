@@ -443,12 +443,11 @@ table.insert(stuffToAdd, {
 	config = {extra = {mult = 15, multMax = 15}},
 	pos = {x = 9, y = 1},
 	loc_txt = {
-		name = 'Flower of Fire',
+		name = '火之花',
 		text = {
-			"{C:mult}+#1#{} Mult",
-			"{C:green}1 in 4{} chance to set",
-			"this joker's Mult to {C:mult}0{}",
-			"until you play {C:attention}Full House{}"
+			"{C:mult}+#1#{}倍率",
+			"倍率加成有{C:green}1/4{}的几率{C:mult}归零",
+			"此时打出{C:attention}葫芦{}可恢复加成"
 		}
 	},
 	rarity = 1,
@@ -464,7 +463,7 @@ table.insert(stuffToAdd, {
 		and card.ability.extra.mult == 0 then
 			card.ability.extra.mult = card.ability.extra.multMax
 			return {
-				message = "Ignited!"
+				message = "点燃！"
 			}
 		end
 		if context.cardarea == G.jokers and context.joker_main and card.ability.extra.mult > 0 then
@@ -477,7 +476,7 @@ table.insert(stuffToAdd, {
 		and pseudorandom('flowerOfFire') < G.GAME.probabilities.normal/4 and card.ability.extra.mult > 0 then
 			card.ability.extra.mult = 0
 			return {
-				message = "Extinguished!"
+				message = "熄灭！"
 			}
 		end
 	end

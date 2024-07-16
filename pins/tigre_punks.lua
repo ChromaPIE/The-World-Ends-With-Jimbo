@@ -13,8 +13,7 @@ table.insert(stuffToAdd, {
 	loc_txt = {
 		name = 'Thanx',
 		text = {
-			"Destroy all scored",
-			"{C:attention}face{} cards"
+			"{C:attention}人头牌{}计分后均被摧毁"
 		}
 	},
 	rarity = 1,
@@ -48,13 +47,12 @@ table.insert(stuffToAdd, {
 	config = {extra = {mult = 0, multGain = 3, multMax = 24}},
 	pos = {x = 2, y = 7},
 	loc_txt = {
-		name = "Demon's Hatred",
+		name = "恶鬼之憎",
 		text = {
-			"This joker gains {C:mult}+#1#{} Mult per hand",
-			"Destroys a random joker",
-			"on blind selection if this",
-			"has {C:mult}#3#{} or more Mult",
-			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)"
+			"每次出牌，本牌获得{C:mult}+#1#{}倍率",
+			"若倍率加成大于等于{C:mult}#3#",
+			"选择盲注时将随机摧毁一张小丑牌",
+			"{C:inactive}（当前为{C:mult}+#2#{C:inactive}倍率）"
 		}
 	},
 	rarity = 1,
